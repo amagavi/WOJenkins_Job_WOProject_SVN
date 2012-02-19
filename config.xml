@@ -27,7 +27,7 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
         <hudson.model.StringParameterDefinition>
           <name>PROJECT_NAME</name>
           <description>What is the name of the WOFramework or WOApplication project in the repository that you want to build?</description>
-          <defaultValue></defaultValue>
+          <defaultValue>ACJars</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>DEPLOYED_APPLICATION_NAME</name>
@@ -37,7 +37,7 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
         <hudson.model.StringParameterDefinition>
           <name>PROJECT_SVN_REPOSITORY</name>
           <description>The SVN repository that holds the project you want to build.</description>
-          <defaultValue></defaultValue>
+          <defaultValue>svn://wo105.mcf.com/opt/repos/svn/air</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
           <name>PROJECT_BRANCHES_TAGS_TRUNK</name>
@@ -103,7 +103,7 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
           <hudson.plugins.git.UserRemoteConfig>
             <name>origin</name>
             <refspec>+refs/heads/*:refs/remotes/origin/*</refspec>
-            <url>https://github.com/avendasora/WOJenkins.git</url>
+            <url>https://github.com/amagavi/WOJenkins.git</url>
           </hudson.plugins.git.UserRemoteConfig>
         </userRemoteConfigs>
         <branches>
@@ -111,6 +111,7 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
             <name>master</name>
           </hudson.plugins.git.BranchSpec>
         </branches>
+        <disableSubmodules>false</disableSubmodules>
         <recursiveSubmodules>false</recursiveSubmodules>
         <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
         <authorOrCommitter>false</authorOrCommitter>
@@ -122,6 +123,7 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
         <gitTool>Default</gitTool>
         <submoduleCfg class="list"/>
         <relativeTargetDir>WOJenkins</relativeTargetDir>
+        <reference></reference>
         <excludedRegions></excludedRegions>
         <excludedUsers></excludedUsers>
         <gitConfigName></gitConfigName>
@@ -149,7 +151,11 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>true</blockBuildWhenUpstreamBuilding>
-  <triggers class="vector"/>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>*/5 * * * *</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
@@ -169,6 +175,14 @@ You can specify the version of Apple WebObjects™ to use, the repository and br
       <artifacts>**/dist/*.tar.gz</artifacts>
       <latestOnly>false</latestOnly>
     </hudson.tasks.ArtifactArchiver>
+    <hudson.tasks.BuildTrigger>
+      <childProjects>AISCore</childProjects>
+      <threshold>
+        <name>SUCCESS</name>
+        <ordinal>0</ordinal>
+        <color>BLUE</color>
+      </threshold>
+    </hudson.tasks.BuildTrigger>
   </publishers>
   <buildWrappers/>
 </project>
